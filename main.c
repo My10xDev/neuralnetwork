@@ -81,7 +81,7 @@ int main(){
 
     float x = 1.352F;
 
-    printf("SIGMOID -> %0.15f\n", atanhf(x));
+    printf("SIGMOID -> %0.15f\n", tanhf(x));
     printf("HELOOOOOOOOOOOOOOOOOOOOOO\n\n\n");
 
     Array a;
