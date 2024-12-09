@@ -77,14 +77,15 @@ int main(){
     printf("HELOOOOOOOOOOOOOOOOOOOOOO\n\n\n");
 
     Array a;
-int i;
+    int i;
 
-initArray(&a, 5);  // initially 5 elements
-for (i = 0; i < 100; i++)
-  insertArray(&a, i);  // automatically resizes as necessary
-printf("%d\n", a.array[9]);  // print 10th element
-printf("%ld\n", a.used);  // print number of elements
-freeArray(&a);
+    initArray(&a, 5);  // initially 5 elements
+    for (i = 0; i < 100; i++){
+        insertArray(&a, i);  // automatically resizes as necessary
+    }
+    printf("%d\n", a.array[9]);  // print 10th element
+    printf("%ld\n", a.used);  // print number of elements
+    freeArray(&a);
 
     return 0;
 }
