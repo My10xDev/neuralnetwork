@@ -9,6 +9,14 @@ typedef struct {
   size_t size;
 } Array;
 
+void array_print_stdio(Array *a) {
+    for (int i = 0;i < a->used; i++) {
+        printf("ARRAY VALUE -> %d\n", a->array[i]);
+    }
+
+    return;
+}
+
 void initArray(Array *a, size_t initialSize) {
   a->array = malloc(initialSize * sizeof(int));
   a->used = 0;
@@ -85,6 +93,9 @@ int main(){
     }
     printf("%d\n", a.array[9]);  // print 10th element
     printf("%ld\n", a.used);  // print number of elements
+
+    array_print_stdio(&a);
+
     freeArray(&a);
 
     return 0;
