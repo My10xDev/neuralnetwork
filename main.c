@@ -14,6 +14,8 @@ void array_print_stdio(Array *a) {
         printf("ARRAY VALUE -> %d\n", a->array[i]);
     }
 
+    printf("SIZE? -> %ld\n", a->size);
+
     return;
 }
 
