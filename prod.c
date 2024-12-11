@@ -3,11 +3,19 @@
 #include <math.h>
 #include <time.h>
 
+#define M_PI 3.14159265358979323846
+
 typedef struct {
   float *array;
   size_t used;
   size_t size;
 } FloatArray;
+
+float geluf(float x) {
+    float sqrt_2_over_pi = sqrt(2.0f / M_PI);
+    float tanh_x = tanh(sqrt_2_over_pi * (x + 0.044715f * pow(x, 3.0f)));
+    return 0.5f * x * (1.0f + tanh_x);
+}
 
 // Function to generate a random float between -1 and 1
 float random_uniform() {
@@ -49,7 +57,10 @@ void FloatArray_free(FloatArray *a) {
 
 float FloatArray_math_dotproduct(FloatArray *x, FloatArray *y) {
 
-  if (x->used != y->used) {return 0.0;}
+  // Im avoiding adding an checking for
+  // Differences in the size of the arrays,
+  // because I want it to crash if you were
+  // dumb enough to pass two arrays with different sizes
 
   float dotproduct = 0.0;
 
@@ -61,11 +72,19 @@ float FloatArray_math_dotproduct(FloatArray *x, FloatArray *y) {
 typedef struct {
   FloatArray *weights;
   FloatArray *inputs;
-  float *gradient;
   float *activation;
 
   size_t size;
 } Neuron;
+
+float Neuron_math_activation(Neuron *n) {
+    float activation = geluf(FloatArray_math_dotproduct(n->weights, n->inputs));
+    if (n->activation == NULL) {
+        n->activation = malloc(sizeof(float));
+    }
+    *n->activation = activation;
+    return activation;
+}
 
 void Neuron_initialize(Neuron *n, size_t input_size) {
   FloatArray weights;
@@ -73,6 +92,10 @@ void Neuron_initialize(Neuron *n, size_t input_size) {
 
   FloatArray_initialize(&weights,input_size);
   FloatArray_initialize(&inputs,input_size); 
+
+  for (int i = 0; i < input_size; i++) {
+    FloatArray_insert_float(&weights, random_uniform());
+  }
 
   n->weights = &weights;
   n->inputs = &inputs;
@@ -82,6 +105,10 @@ void Neuron_initialize(Neuron *n, size_t input_size) {
 int main(){
 
   srand((unsigned int)time(NULL));
+
+  Neuron neuron;
+
+  Neuron_initialize(&neuron, 4);
 
   FloatArray vector_1;
   FloatArray vector_2;
